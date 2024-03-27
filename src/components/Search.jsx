@@ -13,10 +13,14 @@ const Search = ({ city }) => {
           if (response.ok) return response.json();
           throw new Error("City not found, please try again");
         })
-        .then((data) => setWeather(data))
-        .catch((error) => alert(error));
+        .then((data) => {
+          setWeather(data);
+        })
+        .catch((error) => {
+          alert(error);
+        });
     }
-  }, [city]);
+  }, [city, apiKey]);
 
   const getImageSrc = (main) => {
     switch (main) {

@@ -41,13 +41,13 @@ const getWeatherImage = (weatherType) => {
       <img
         src={iconList.find((item) => item.type === weatherType)?.img}
         alt={weatherType}
-        style={{ width: "200px", height: "200px", alignItems: "center" }}
+        style={{ width: "250px", height: "250px", alignItems: "center" }}
       />
     </div>
   );
 };
 
-const InfoWeather = ({ weatherData, iconList }) => {
+const InfoWeather = ({ weatherData }) => {
   if (!weatherData) {
     return (
       <div className="weather-info">No data available. Please try again.</div>
