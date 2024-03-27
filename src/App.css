@@ -83,13 +83,8 @@ body {
   margin-top: 20px;
 }
 
-.error,
-.loading {
+.error {
   text-align: center;
-}
-
-.loading {
-  color: #999;
 }
 
 @media (max-width: 600px) {

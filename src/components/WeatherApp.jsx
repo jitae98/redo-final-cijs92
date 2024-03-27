@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Search from "./Search";
 import InfoWeather from "./InfoWeather";
 
@@ -42,9 +42,9 @@ const WeatherApp = () => {
   const [city, setCity] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const fetchData = async (cityInput) => {
+  const fetchData = async (_city) => {
     const apiKey = "874bd9de85c16024fb4fb064fb00e949";
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&units=metric&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${_city}&units=metric&appid=${apiKey}`;
 
     try {
       const response = await fetch(apiUrl);
@@ -61,25 +61,14 @@ const WeatherApp = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
     fetchData(city);
-  };
+  }, [city]);
 
   return (
     <div className="weather-app">
       <div className="search-container">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Enter city name"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-          <button type="submit">
-            <Search search={fetchData} />
-          </button>
-        </form>
+        <Search onSetCity={setCity} />
         {errorMessage && <p className="error">{errorMessage}</p>}
         {weatherData && (
           <InfoWeather weatherData={weatherData} iconList={icons} />

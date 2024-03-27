@@ -41,7 +41,11 @@ const getWeatherImage = (weatherType) => {
       <img
         src={iconList.find((item) => item.type === weatherType)?.img}
         alt={weatherType}
-        style={{ width: "250px", height: "250px", alignItems: "center" }}
+        style={{
+          width: "250px",
+          height: "250px",
+          alignItems: "center",
+        }}
       />
     </div>
   );
