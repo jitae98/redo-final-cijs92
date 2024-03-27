@@ -35,6 +35,7 @@ const Search = ({ city }) => {
 
   return (
     <div className="search">
+      Search
       {city && (
         <>
           <div className="search-location">
