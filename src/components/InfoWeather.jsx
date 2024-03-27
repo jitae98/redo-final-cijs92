@@ -1,7 +1,7 @@
 import React from "react";
 
 const getWeatherImage = (weatherType) => {
-  const weatherIconList = [
+  const iconList = [
     {
       type: "Clear",
       img: "https://cdn-icons-png.flaticon.com/512/6974/6974833.png",
@@ -36,33 +36,38 @@ const getWeatherImage = (weatherType) => {
     },
   ];
 
-  const weatherImg = weatherIconList.find((item) => item.type === weatherType);
-
-  return weatherImg ? weatherImg.img : "";
+  return (
+    <div className="weather-image">
+      <img
+        src={iconList.find((item) => item.type === weatherType)?.img}
+        alt={weatherType}
+      />
+    </div>
+  );
 };
 
-const InfoWeather = ({ weatherData }) => {
-  const { main, name, sys, weather } = weatherData;
-
-  const image = getWeatherImage(weather[0].main);
+const InfoWeather = ({ weatherData, iconList }) => {
+  if (!weatherData) {
+    return (
+      <div className="weather-info">No data available. Please try again.</div>
+    );
+  }
 
   return (
     <div className="weather-info">
       <h2 className="city">
-        {name}, {sys.country}
+        {weatherData.name}, {weatherData.sys.country}
       </h2>
-      <div className="weather-image">
-        <img src={image} alt={weather[0].main} />
-      </div>
+      {getWeatherImage(weatherData.weather[0].main)}
       <div className="temp">
-        <p>Temperature: {main.temp}°C</p>
+        <p>Temperature: {weatherData.main.temp}°C</p>
       </div>
       <div className="other-details">
-        <p>Humidity: {main.humidity}%</p>
-        <p>Wind Speed: {sys.windspeed}m/s</p>
+        <p>Humidity: {weatherData.main.humidity}%</p>
+        <p>Wind Speed: {weatherData.wind.speed} m/s</p>
       </div>
       <div className="description">
-        <p>{weather[0].description}</p>
+        <p>{weatherData.weather[0].description}</p>
       </div>
     </div>
   );

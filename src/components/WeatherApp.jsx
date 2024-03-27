@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import Search from "./Search";
 import InfoWeather from "./InfoWeather";
-import axios from "axios";
-import Search from "./Search";
-import InfoWeather from "./InfoWeather";
 
 const icons = [
   {
@@ -43,16 +40,23 @@ const icons = [
 const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [city, setCity] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const fetchData = async (cityInput) => {
     const apiKey = "Your API Key";
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&units=metric&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=874bd9de85c16024fb4fb064fb00e949`;
 
     try {
       const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+
       const data = await response.json();
       setWeatherData(data);
+      setErrorMessage(null);
     } catch (error) {
+      setErrorMessage("Invalid city name or city not found. Please try again.");
       setWeatherData(null);
     }
   };
@@ -72,8 +76,11 @@ const WeatherApp = () => {
             value={city}
             onChange={(e) => setCity(e.target.value)}
           />
-          <button type="submit">Search</button>
+          <button type="submit">
+            <Search />
+          </button>
         </form>
+        {errorMessage && <p className="error">{errorMessage}</p>}
         {weatherData && (
           <InfoWeather weatherData={weatherData} iconList={icons} />
         )}
