@@ -1,68 +1,59 @@
 import React, { useState, useEffect } from "react";
 
-const Search = () => {
-  const apiKey = "your_api_key_here"; // Replace this with your actual API key.
+const Search = ({ city }) => {
+  const apiKey = "874bd9de85c16024fb4fb064fb00e949";
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
-    const fetchWeather = async (city) => {
-      const response = await fetch(
+    if (city) {
+      fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setWeather(data);
-      } else {
-        alert("City not found, please try again");
-      }
-    };
-
-    const city = "Seoul";
-    fetchWeather(city);
-  }, []);
+      )
+        .then((response) => {
+          if (response.ok) return response.json();
+          throw new Error("City not found, please try again");
+        })
+        .then((data) => setWeather(data))
+        .catch((error) => alert(error));
+    }
+  }, [city]);
 
   const getImageSrc = (main) => {
     switch (main) {
       case "Clear":
-        return ".png";
+        return "img/clear.png";
       case "Rain":
-        return ".gif";
+        return "img/rain.gif";
       case "Clouds":
-        return ".gif";
+        return "img/clouds.gif";
       case "Snow":
-        return ".gif";
+        return "img/snow.gif";
       default:
-        return ".gif";
+        return "img/not-available.gif";
     }
   };
 
-  const city = (weather && weather?.main?.city) || "";
-
   return (
     <div className="search">
-      <div className="search-location">
-        <span className="location">{city}</span>
-      </div>
-      <div className="search-weather-details">
-        <div className="search-weather-image">
-          {weather && (
+      {city && (
+        <>
+          <div className="search-location">
+            <span className="location">{weather.name}</span>
+          </div>
+          <div className="search-weather-details">
             <img
-              src={require(`../img/${getImageSrc(
-                weather?.weather[0]?.main
-              )}.png`)}
-              alt={weather?.weather[0]?.main}
+              src={getImageSrc(weather.weather[0].main)}
+              alt={weather.weather[0].main}
+              className="search-weather-image"
             />
-          )}
-        </div>
-        <div className="search-temperature">
-          {weather && (
-            <span className="temperature">
-              {weather?.main?.temp.toFixed(0)}&#x2103;
-            </span>
-          )}
-        </div>
-      </div>
+            <div className="search-temperature">
+              <span className="temperature">
+                {weather.main.temp.toFixed(0)}&#x2103;
+              </span>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

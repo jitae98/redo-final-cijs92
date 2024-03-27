@@ -43,8 +43,8 @@ const WeatherApp = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const fetchData = async (cityInput) => {
-    const apiKey = "Your API Key";
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=874bd9de85c16024fb4fb064fb00e949`;
+    const apiKey = "874bd9de85c16024fb4fb064fb00e949";
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&units=metric&appid=${apiKey}`;
 
     try {
       const response = await fetch(apiUrl);
@@ -77,7 +77,7 @@ const WeatherApp = () => {
             onChange={(e) => setCity(e.target.value)}
           />
           <button type="submit">
-            <Search />
+            <Search search={fetchData} />
           </button>
         </form>
         {errorMessage && <p className="error">{errorMessage}</p>}
